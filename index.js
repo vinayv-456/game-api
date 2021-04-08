@@ -65,8 +65,8 @@ app.get('/game', async (req, res)=>{
   
   app.post('/game', async(req, res)=>{
     try{
-      const {gamecards, hasDefuseCard, activeCard, user_name} = req.body;
-      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gamecards}`, "hasDefuseCard", `${hasDefuseCard}`, "activeCard", `${activeCard}`])
+      const {gameCards, hasDefuseCard, activeCard, user_name} = req.body;
+      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gameCards}`, "hasDefuseCard", `${hasDefuseCard}`, "activeCard", `${activeCard}`])
       res.status(200).send("inserted")
     }
     catch(e){
