@@ -46,9 +46,10 @@ app.get('/game', async (req, res)=>{
       }
 
       if(!isMember)
-      {
+      { 
+        const emptyArray = [];
         createUser = await redis.send_command('lpush', ["users", `${user_name}`]);
-        insertGame = await redis.send_command('hmset', [`${user_name}`, "score", 0])
+        insertGame = await redis.send_command('hmset', [`${user_name}`, "score", 0, "gamecards", `${emptyArray}` , "hasDefuseCard", "false", "activeCard", null])
       }
       console.log("isMemeber", isMember);
       
