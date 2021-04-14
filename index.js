@@ -65,8 +65,8 @@ app.get('/game', async (req, res)=>{
   
   app.post('/game', async(req, res)=>{
     try{
-      const {gameCards, hasDefuseCard, activeCard, user_name} = req.body;
-      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gameCards}`, "hasDefuseCard", `${hasDefuseCard}`, "activeCard", `${activeCard}`])
+      const {gameCards, hasDefuseCard, activeCard, user_name, score} = req.body;
+      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gameCards}`, "hasDefuseCard", `${hasDefuseCard}`, "activeCard", `${activeCard}`, "score", score])
       res.status(200).send("inserted")
     }
     catch(e){
@@ -77,14 +77,9 @@ app.get('/game', async (req, res)=>{
 
   app.put('/game', async(req, res)=>{
     try{
-      const {user_name, hasWon} = req.body;
+      const {user_name, score} = req.body;
       const emptyArray = []
-      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${emptyArray}` , "hasDefuseCard", "false", "activeCard", null])
-      if(hasWon)
-      {
-
-        incrementScore = await redis.send_command('HINCRBY', ["user1", "score", 1])
-      }
+      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${emptyArray}` , "hasDefuseCard", "false", "activeCard", null, 'score', score])
       res.status(200).send("saved")
     }
     catch(e){
