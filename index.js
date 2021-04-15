@@ -51,10 +51,8 @@ app.get('/game', async (req, res)=>{
         createUser = await redis.send_command('lpush', ["users", `${user_name}`]);
         insertGame = await redis.send_command('hmset', [`${user_name}`, "score", 0, "gamecards", `${emptyArray}` , "hasDefuseCard", "false", "activeCard", null])
       }
-      console.log("isMemeber", isMember);
       
       let game = await redis.send_command('hgetall', `${user_name}`)
-      console.log("COmmand execed: ", game);
       res.status(200).send(game);
     }
     catch(e){
