@@ -66,7 +66,7 @@ app.get('/game', async (req, res)=>{
   app.post('/game', async(req, res)=>{
     try{
       const {gameCards, hasDefuseCard, activeCard, user_name, score} = req.body;
-      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gameCards}`, "hasDefuseCard", `${hasDefuseCard}`, "activeCard", `${activeCard}`, "score", score])
+      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gameCards}`, "hasDefuseCard", `${hasDefuseCard}`, "activeCard", `${activeCard}`, "score", `${score}`])
       res.status(200).send("inserted")
     }
     catch(e){
@@ -77,9 +77,8 @@ app.get('/game', async (req, res)=>{
 
   app.put('/game', async(req, res)=>{
     try{
-      const {user_name, score} = req.body;
-      const emptyArray = []
-      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${emptyArray}` , "hasDefuseCard", "false", "activeCard", null, 'score', score])
+      const {user_name, gameCards, score, hasDefusedCard, activeCard} = req.body;
+      insertGame = await redis.send_command('hmset', [`${user_name}`, "gamecards", `${gameCards}` , "hasDefuseCard", hasDefusedCard, "activeCard", `${activeCard}`, 'score', `${score}`])
       res.status(200).send("saved")
     }
     catch(e){
